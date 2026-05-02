@@ -1,0 +1,12 @@
+package com.practice.orderservice.dto;
+
+import lombok.Data;
+import lombok.Getter;
+
+@Data
+public class ProductResponse {
+	private int productId;
+	private String productName;
+	private int productPrice;
+	
+}

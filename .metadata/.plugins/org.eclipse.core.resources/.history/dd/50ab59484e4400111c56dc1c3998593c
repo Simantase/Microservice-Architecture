@@ -1,0 +1,12 @@
+package com.practice.productservice.service;
+
+import org.springframework.stereotype.Service;
+
+import com.practice.productservice.entity.Product;
+
+@Service
+public interface ProductService {
+
+	public Product saveProduct(Product product);
+
+}

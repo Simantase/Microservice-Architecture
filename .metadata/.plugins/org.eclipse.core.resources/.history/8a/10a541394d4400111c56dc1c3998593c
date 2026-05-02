@@ -1,0 +1,9 @@
+package com.practice.productservice.service;
+
+import com.practice.productservice.entity.Product;
+
+public interface ProductService {
+
+	public Product saveProduct(Product product);
+
+}

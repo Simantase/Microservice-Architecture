@@ -1,0 +1,105 @@
+package com.practice.orderservice.service;
+
+import com.practice.orderservice.client.ProductClient;
+import com.practice.orderservice.client.UserClient;
+import com.practice.orderservice.dto.*;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Slf4j
+@Service
+public class OrderServiceImpl implements OrderService {
+
+	private UserClient userClient;
+	private ProductClient productClient;
+
+	public OrderServiceImpl(UserClient userClient, ProductClient productClient) {
+		this.userClient = userClient;
+		this.productClient = productClient;
+	}
+	// Part 01
+	//	@Override
+	//	public OrderResponse createOrder(OrderRequest request) {
+	//
+	//		UserResponse user = userClient.getUserById(request.getUserId());
+	//		ProductResponse product = productClient.getProductById(request.getProductId());
+	//		return OrderResponse.builder()
+	//				.userId(user.getUserId())
+	//				.userName(user.getUserName())
+	//				.productId(product.getProductId())
+	//				.productName(product.getProductName())
+	//				.productPrice(product.getProductPrice())
+	//				.status("ORDER_CREATED")
+	//				.build();
+	//	}
+	// Part 02 Circuit Breaker
+	@Override
+	public OrderResponse createOrder(OrderRequest request) {
+
+	    UserResponse user = getUser(request.getUserId());
+	    ProductResponse product = getProduct(request.getProductId());
+
+	    if (user == null) {
+	        return OrderResponse.builder()
+	                .userId(request.getUserId())
+	                .productId(request.getProductId())
+	                .status("ORDER_FAILED_USER_SERVICE_DOWN")
+	                .build();
+	    }
+
+	    if (product == null) {
+	        return OrderResponse.builder()
+	                .userId(user.getUserId())
+	                .userName(user.getUserName())
+	                .productId(request.getProductId())
+	                .status("ORDER_FAILED_PRODUCT_SERVICE_DOWN")
+	                .build();
+	    }
+
+	    return OrderResponse.builder()
+	            .userId(user.getUserId())
+	            .userName(user.getUserName())
+	            .productId(product.getProductId())
+	            .productName(product.getProductName())
+	            .productPrice(product.getProductPrice())
+	            .status("ORDER_CREATED")
+	            .build();
+	}
+	@CircuitBreaker(name = "userService", fallbackMethod = "userFallback")
+	public UserResponse getUser(int userId) {
+		return userClient.getUserById(userId);
+	}
+
+	public UserResponse userFallback(int userId, Throwable t) {
+		log.error("User Service failed: {}", t.getMessage());
+		return null; // or cached response / throw exception
+	}
+//	@CircuitBreaker(name = "productService", fallbackMethod = "productFallback")
+//	@Retry(name = "productService")
+//	public ProductResponse getProduct(int productId) {
+//		log.info("Calling Product Service...");
+//		return productClient.getProductById(productId);
+//	}
+	// Test Circuit Breaker
+	@CircuitBreaker(name = "productservice", fallbackMethod = "productFallback")
+	public ProductResponse getProduct(int productId) {
+	    return productClient.getProductById(productId);
+	}
+
+	public ProductResponse productFallback(int productId, Throwable t) {
+
+		log.error("Product Service failed for id {}: {}", productId, t.getMessage());
+
+		return ProductResponse.builder()
+				.productId(productId)
+				.productName("TEMP_UNAVAILABLE")
+				.productPrice(0)
+				.build();
+	}
+
+}

@@ -1,0 +1,13 @@
+package com.practice.orderservice.dto;
+
+public class OrderResponse {
+    private int userId;
+    private String userName;
+
+    private int productId;
+    private String productName;
+    private int productPrice;
+
+    private String status;
+    
+}

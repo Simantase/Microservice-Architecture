@@ -1,0 +1,5 @@
+package com.practice.productservice.controller;
+
+public class ProductController {
+
+}

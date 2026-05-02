@@ -1,0 +1,16 @@
+package com.practice.orderservice.client;
+
+import com.practice.orderservice.dto.UserResponse;
+
+public class UserClientFallback implements UserClient{
+
+	@Override
+	public UserResponse getUserById(int userId) {
+		return UserResponse.builder()
+				.userId(userId)
+				.userName("FEIGN_FALLBACK")
+				.userEmail("Not availble")
+				.build();
+	}
+
+}

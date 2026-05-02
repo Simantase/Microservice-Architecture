@@ -1,0 +1,14 @@
+package com.practice.orderservice.circuitbreaker;
+
+import com.practice.orderservice.client.UserClient;
+import com.practice.orderservice.dto.UserResponse;
+
+public class UserClientFallback implements UserClient{
+
+	@Override
+	public UserResponse getUserById(int userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

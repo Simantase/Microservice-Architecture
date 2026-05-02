@@ -1,0 +1,19 @@
+package com.practice.orderservice.circuitbreaker;
+
+import org.springframework.stereotype.Component;
+
+import com.practice.orderservice.client.UserClient;
+import com.practice.orderservice.dto.UserResponse;
+
+@Component
+public class UserClientFallback implements UserClient{
+
+	@Override
+	public UserResponse getUserById(int userId) {
+		UserResponse userResponse=new UserResponse();
+		userResponse.setUserId(userId);
+		userResponse.setUserName("User Service is unreachable!!");
+		return userResponse;
+	}
+
+}

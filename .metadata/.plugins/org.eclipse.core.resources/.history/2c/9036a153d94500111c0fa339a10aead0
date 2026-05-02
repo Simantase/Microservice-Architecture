@@ -1,0 +1,5 @@
+package com.practice.orderservice.client;
+
+public class ProductClientFallback {
+
+}

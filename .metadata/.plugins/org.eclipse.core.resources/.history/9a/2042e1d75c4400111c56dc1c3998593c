@@ -1,0 +1,5 @@
+package com.practice.orderservice.service;
+
+public interface OrderService {
+
+}

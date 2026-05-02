@@ -1,0 +1,18 @@
+package com.practice.orderservice.client;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import com.practice.orderservice.circuitbreaker.ProductClientFallback;
+import com.practice.orderservice.dto.ProductResponse;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+
+//@FeignClient(name = "productservice")
+@CircuitBreaker(name = "productservice", fallbackMethod = ProductClientFallback.class)
+public interface ProductClient {
+
+	@GetMapping("/products/{productId}")
+	ProductResponse getProductById(@PathVariable("productId") int productId);
+}

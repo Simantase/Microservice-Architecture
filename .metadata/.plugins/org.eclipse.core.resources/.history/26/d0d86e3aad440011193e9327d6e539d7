@@ -1,0 +1,16 @@
+package com.practice.orderservice.circuitbreaker;
+
+import com.practice.orderservice.client.ProductClient;
+
+@Component
+public class ProductClientFallback implements ProductClient {
+
+    @Override
+    public ProductResponse getProductById(int productId) {
+        ProductResponse response = new ProductResponse();
+        response.setProductId(productId);
+        response.setProductName("FALLBACK_PRODUCT");
+        response.setProductPrice(0);
+        return response;
+    }
+}

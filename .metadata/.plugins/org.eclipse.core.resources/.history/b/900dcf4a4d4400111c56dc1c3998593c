@@ -1,0 +1,10 @@
+package com.practice.productservice.serviceimpl;
+
+import org.springframework.stereotype.Service;
+
+import com.practice.productservice.service.ProductService;
+
+@Service
+public class ProductServiceImpl implements ProductServiced{
+
+}

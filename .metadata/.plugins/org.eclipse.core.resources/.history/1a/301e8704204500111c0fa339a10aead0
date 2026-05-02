@@ -1,0 +1,15 @@
+package com.practice.orderservice.client;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import com.practice.orderservice.circuitbreaker.UserClientFallback;
+import com.practice.orderservice.dto.UserResponse;
+
+@FeignClient(name = "userservice", fallback = UserClientFallback.class)
+public interface UserClient {
+
+	@GetMapping("/users/{userId}")
+	UserResponse getUserById(@PathVariable("userId") int userId);
+}

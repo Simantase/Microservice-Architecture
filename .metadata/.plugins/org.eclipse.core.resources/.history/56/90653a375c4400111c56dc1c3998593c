@@ -1,0 +1,6 @@
+package com.practice.orderservice.dto;
+
+public class OrderRequest {
+	private int userId;
+	private int productId;
+}

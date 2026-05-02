@@ -1,0 +1,27 @@
+package com.practice.productservice.serviceimpl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.practice.productservice.entity.Product;
+import com.practice.productservice.repository.ProductRepository;
+import com.practice.productservice.service.ProductService;
+
+@Service
+public class ProductServiceImpl implements ProductService{
+
+	@Autowired
+	private ProductRepository productRepository;
+
+	@Override
+	public Product saveProduct(Product product) {
+		return productRepository.save(product);
+	}
+
+	@Override
+	public Product fetchProductById(int productId) {
+		return productRepository.findById(productId)
+				.orElseThrow(()-> new RuntimeException("Product is not found"));
+	}
+
+}

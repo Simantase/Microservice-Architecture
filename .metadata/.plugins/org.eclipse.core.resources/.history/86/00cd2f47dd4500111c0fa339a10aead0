@@ -1,0 +1,13 @@
+package com.practice.orderservice.client;
+
+import com.practice.orderservice.dto.UserResponse;
+
+public class UserClientFallback implements UserClient{
+
+	@Override
+	public UserResponse getUserById(int userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

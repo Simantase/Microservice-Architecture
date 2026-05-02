@@ -1,0 +1,33 @@
+package com.practice.orderservice.service;
+
+import com.practice.orderservice.client.ProductClient;
+import com.practice.orderservice.client.UserClient;
+import com.practice.orderservice.dto.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class OrderServiceImpl implements OrderService {
+
+	@Autowired
+	private UserClient userClient;
+	@Autowired
+	private ProductClient productClient;
+
+	@Override
+	public OrderResponse createOrder(OrderRequest request) {
+
+		UserResponse user = userClient.getUserById(request.getUserId());
+		ProductResponse product = productClient.getProductById(request.getProductId());
+
+		return OrderResponse.builder()
+				.userId(user.getUserId())
+				.userName(user.getUserName())
+				.productId(product.getProductId())
+				.productName(product.getProductName())
+				.productPrice(product.getProductPrice())
+				.status("ORDER_CREATED")
+				.build();
+	}
+}

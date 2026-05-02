@@ -1,0 +1,26 @@
+spring.application.name=api-gateway-service
+server.port=8083
+
+# =========================
+# EUREKA CONFIGURATION
+# =========================
+eureka.client.service-url.defaultZone=http://localhost:8761/eureka
+
+# =========================
+# GATEWAY ROUTING
+# =========================
+
+# ORDER SERVICE ROUTE
+spring.cloud.gateway.routes[0].id=orderservice
+spring.cloud.gateway.routes[0].uri=lb://orderservice
+spring.cloud.gateway.routes[0].predicates[0]=Path=/orders/**
+
+# USER SERVICE ROUTE
+spring.cloud.gateway.routes[1].id=userservice
+spring.cloud.gateway.routes[1].uri=lb://USERSERVICE
+spring.cloud.gateway.routes[1].predicates[0]=Path=/users/**
+
+# PRODUCT SERVICE ROUTE
+spring.cloud.gateway.routes[2].id=productservice
+spring.cloud.gateway.routes[2].uri=lb://PRODUCTSERVICE
+spring.cloud.gateway.routes[2].predicates[0]=Path=/products/**
